@@ -113,7 +113,7 @@ The word-level semantic transformation and sequence prediction tasks share an id
 
 ## 2. Mathematical Derivations: Analytical Backpropagation
 
-The raw implementation ([`raw_model.py`](file:///Users/gabriel/Projects/SynonymNN/raw_model.py)) computes analytical gradients without autodiff packages.
+The raw implementation ([`raw_model.py`](raw_model.py)) computes analytical gradients without autodiff packages.
 
 ### 2.1 Word-to-Word Semantic Gradients (Section 9)
 Given target index $c$, the forward pass computes:
@@ -161,7 +161,7 @@ Given input sequence $w_1, \dots, w_t$ and target $w_{t+1}$ with target index $c
 
 ## 3. Dataset Architecture
 
-The dataset is stored in a separate, dedicated file: [`dataset.json`](file:///Users/gabriel/Projects/SynonymNN/dataset.json).
+The dataset is stored in a separate, dedicated file: [`dataset.json`](dataset.json).
 
 ```json
 {
@@ -196,16 +196,16 @@ The dataset is stored in a separate, dedicated file: [`dataset.json`](file:///Us
 
 | File | Description |
 | :--- | :--- |
-| [`dataset.json`](file:///Users/gabriel/Projects/SynonymNN/dataset.json) | Standalone JSON dataset defining vocabulary, synonym pairs, antonym pairs, semantic relations, and sentence corpora. |
-| [`raw_model.py`](file:///Users/gabriel/Projects/SynonymNN/raw_model.py) | Pure NumPy neural implementation. Features exact analytical gradients, BPTT, and a vectorized Adam optimizer. Zero external frameworks. |
-| [`raw_main.py`](file:///Users/gabriel/Projects/SynonymNN/raw_main.py) | CLI application for the pure NumPy model. Supports `--demo`, `--interactive`, query flags, and model retraining. |
-| [`raw_model_weights.npz`](file:///Users/gabriel/Projects/SynonymNN/raw_model_weights.npz) | Trained weight archive saved via `numpy.savez`. Contains $E, D, T_R, \mathbf{b}$, and all $T_r$ operators. |
-| [`model.py`](file:///Users/gabriel/Projects/SynonymNN/model.py) | PyTorch model implementation (`WordEncoder`, `SemanticTransition`, `RecurrentTransition`, `WordDecoder`, `UnifiedWordModel`). |
-| [`dataset.py`](file:///Users/gabriel/Projects/SynonymNN/dataset.py) | PyTorch-compatible dataset loader, vocabulary indexer, and tensor batch generator. |
-| [`train.py`](file:///Users/gabriel/Projects/SynonymNN/train.py) | PyTorch training pipeline with multi-task cross-entropy and cosine similarity regularization. |
-| [`main.py`](file:///Users/gabriel/Projects/SynonymNN/main.py) | PyTorch CLI interface for inference, architectural demonstrations, and interactive inspection. |
-| [`model_weights.pt`](file:///Users/gabriel/Projects/SynonymNN/model_weights.pt) | Saved PyTorch checkpoint file containing trained state dicts and vocabulary mapping. |
-| [`test_all.py`](file:///Users/gabriel/Projects/SynonymNN/test_all.py) | Automated test suite validating tensor dimensions, row-selection equivalence, probability normalization, and recurrence. |
+| [`dataset.json`](dataset.json) | Standalone JSON dataset defining vocabulary, synonym pairs, antonym pairs, semantic relations, and sentence corpora. |
+| [`raw_model.py`](raw_model.py) | Pure NumPy neural implementation. Features exact analytical gradients, BPTT, and a vectorized Adam optimizer. Zero external frameworks. |
+| [`raw_main.py`](raw_main.py) | CLI application for the pure NumPy model. Supports `--demo`, `--interactive`, query flags, and model retraining. |
+| [`raw_model_weights.npz`](raw_model_weights.npz) | Trained weight archive saved via `numpy.savez`. Contains $E, D, T_R, \mathbf{b}$, and all $T_r$ operators. |
+| [`model.py`](model.py) | PyTorch model implementation (`WordEncoder`, `SemanticTransition`, `RecurrentTransition`, `WordDecoder`, `UnifiedWordModel`). |
+| [`dataset.py`](dataset.py) | PyTorch-compatible dataset loader, vocabulary indexer, and tensor batch generator. |
+| [`train.py`](train.py) | PyTorch training pipeline with multi-task cross-entropy and cosine similarity regularization. |
+| [`main.py`](main.py) | PyTorch CLI interface for inference, architectural demonstrations, and interactive inspection. |
+| [`model_weights.pt`](model_weights.pt) | Saved PyTorch checkpoint file containing trained state dicts and vocabulary mapping. |
+| [`test_all.py`](test_all.py) | Automated test suite validating tensor dimensions, row-selection equivalence, probability normalization, and recurrence. |
 
 ---
 
@@ -370,4 +370,4 @@ The test suite validates tensor dimensions, mathematical invariants, row-indexin
 - `test_decoder_and_softmax`: Ensures score shapes and that categorical probabilities sum to $1.0$.
 - `test_recurrent_transition`: Verifies parameter shapes for $T_R \in \mathbb{R}^{(h+d) \times h}$, bias vector $\mathbf{b}$, and concatenation $[\mathbf{h}_{t-1}, \mathbf{e}_t]$.
 - `test_unified_model_end_to_end`: Validates forward passes for both semantic transformations and recurrent sequence modeling.
-- `test_dataset_loading`: Confirms parsing, vocabulary building, and integrity of [`dataset.json`](file:///Users/gabriel/Projects/SynonymNN/dataset.json).
+- `test_dataset_loading`: Confirms parsing, vocabulary building, and integrity of [`dataset.json`](dataset.json).
