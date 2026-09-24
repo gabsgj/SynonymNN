@@ -1,11 +1,11 @@
 # Word Embedding and Word-to-Word Transformations
 
 A comprehensive neural implementation of continuous word representations, semantic transitions, and recurrent sequence memory based on the theoretical framework described in:
-**"Word Embedding and Word-to-Word Transformations"** (`/Users/gabriel/Downloads/word_embedding.pdf`).
+**"Word Embedding and Word-to-Word Transformations"**.
 
 This repository provides two complete implementations:
-1. **Raw NumPy Implementation** ([`raw_model.py`](file:///Users/gabriel/Projects/SynonymNN/raw_model.py), [`raw_main.py`](file:///Users/gabriel/Projects/SynonymNN/raw_main.py)): Built strictly with NumPy and the Python standard library. Features first-principles analytical backpropagation, Backpropagation Through Time (BPTT), and a vectorized Adam optimizer with zero external dependencies.
-2. **PyTorch Implementation** ([`model.py`](file:///Users/gabriel/Projects/SynonymNN/model.py), [`train.py`](file:///Users/gabriel/Projects/SynonymNN/train.py), [`main.py`](file:///Users/gabriel/Projects/SynonymNN/main.py)): PyTorch module architecture supporting Apple Silicon GPU (`mps`), CUDA, and CPU acceleration.
+1. **Raw NumPy Implementation** ([`raw_model.py`](raw_model.py), [`raw_main.py`](raw_main.py)): Built strictly with NumPy and the Python standard library. Features first-principles analytical backpropagation, Backpropagation Through Time (BPTT), and a vectorized Adam optimizer with zero external dependencies.
+2. **PyTorch Implementation** ([`model.py`](model.py), [`train.py`](train.py), [`main.py`](main.py)): PyTorch module architecture supporting Apple Silicon GPU (`mps`), CUDA, and CPU acceleration.
 
 ---
 
