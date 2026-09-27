@@ -104,7 +104,7 @@ $$
 Because $\mathbf{x}_i$ is a one-hot vector with a single 1 at index $i$, $\mathbf{x}_i^T E$ selects the $i$-th row of $E$:
 
 $$
-E = \begin{bmatrix} \mathbf{e}_1 \\ \mathbf{e}_2 \\ \vdots \\ \mathbf{e}_V \end{bmatrix}
+E = \begin{bmatrix} \mathbf{e}_1 \\\\ \mathbf{e}_2 \\\\ \vdots \\\\ \mathbf{e}_V \end{bmatrix}
 $$
 
 ### 2.3 Word-to-Word Semantic Transitions (Sections 4 - 7)
@@ -116,45 +116,45 @@ $$
 
 The architecture models distinct semantic behaviors via the geometric structure of $T_r$:
 
-1. **Word-to-Synonym Transition ($T_{syn}$, Section 5)**:
-   A synonym transition preserves semantic meaning. Hence, for synonyms $(w_i, w_j)$:
+**1. Word-to-Synonym Transition ($T_{syn}$, Section 5)**\
+A synonym transition preserves semantic meaning. Hence, for synonyms $(w_i, w_j)$:
 
-   $$
-   \mathbf{e}_i \approx \mathbf{e}_j \implies T_{syn} \approx I
-   $$
+$$
+\mathbf{e}_i \approx \mathbf{e}_j \implies T_{syn} \approx I
+$$
 
-   where $I \in \mathbb{R}^{d \times d}$ is the identity matrix.
-   The semantic objective minimizes distance:
+where $I \in \mathbb{R}^{d \times d}$ is the identity matrix.
+The semantic objective minimizes distance:
 
-   $$
-   \mathcal{L}_{syn} = \sum_{(i,j) \in \mathcal{S}} \|\mathbf{e}_i - \mathbf{e}_j\|^2 \quad \text{or} \quad \sum_{(i,j) \in \mathcal{S}} [1 - \cos(\mathbf{e}_i, \mathbf{e}_j)]
-   $$
+$$
+\mathcal{L}_{syn} = \sum_{(i,j) \in \mathcal{S}} \lVert\mathbf{e}_i - \mathbf{e}_j\rVert^2 \quad \text{or} \quad \sum_{(i,j) \in \mathcal{S}} [1 - \cos(\mathbf{e}_i, \mathbf{e}_j)]
+$$
 
-2. **Word-to-Antonym Transition ($T_{ant}$, Section 6)**:
-   An antonym transition reverses semantic polarity. Opposites are modeled by vector reflection:
+**2. Word-to-Antonym Transition ($T_{ant}$, Section 6)**\
+An antonym transition reverses semantic polarity. Opposites are modeled by vector reflection:
 
-   $$
-   \mathbf{e}_i \approx -\mathbf{e}_j \implies T_{ant} \approx -I
-   $$
+$$
+\mathbf{e}_i \approx -\mathbf{e}_j \implies T_{ant} \approx -I
+$$
 
-   The semantic objective penalizes alignment:
+The semantic objective penalizes alignment:
 
-   $$
-   \mathcal{L}_{ant} = \sum_{(i,j) \in \mathcal{A}} \|\mathbf{e}_i + \mathbf{e}_j\|^2 \quad \text{or} \quad \sum_{(i,j) \in \mathcal{A}} [1 + \cos(\mathbf{e}_i, \mathbf{e}_j)]
-   $$
+$$
+\mathcal{L}_{ant} = \sum_{(i,j) \in \mathcal{A}} \lVert\mathbf{e}_i + \mathbf{e}_j\rVert^2 \quad \text{or} \quad \sum_{(i,j) \in \mathcal{A}} [1 + \cos(\mathbf{e}_i, \mathbf{e}_j)]
+$$
 
-3. **General Semantic Transitions ($T_r$, Section 7)**:
-   The operator generalizes to arbitrary semantic transformations:
+**3. General Semantic Transitions ($T_r$, Section 7)**\
+The operator generalizes to arbitrary semantic transformations:
 
-   $$
-   \mathbf{e}_j \approx \mathbf{e}_i T_r
-   $$
+$$
+\mathbf{e}_j \approx \mathbf{e}_i T_r
+$$
 
-   Supported relations include:
-   - Grammatical number: `singular_to_plural` (e.g., $\text{cat} \to \text{cats}$)
-   - Verb tense: `present_to_past` (e.g., $\text{walk} \to \text{walked}$, $\text{drink} \to \text{drank}$)
-   - Relational knowledge: `country_to_capital` (e.g., $\text{france} \to \text{paris}$, $\text{japan} \to \text{tokyo}$)
-   - Taxonomic hierarchy: `category_to_instance` (e.g., $\text{fruit} \to \text{apple}$, $\text{animal} \to \text{dog}$)
+Supported relations include:
+- Grammatical number: `singular_to_plural` (e.g., $\text{cat} \to \text{cats}$)
+- Verb tense: `present_to_past` (e.g., $\text{walk} \to \text{walked}$, $\text{drink} \to \text{drank}$)
+- Relational knowledge: `country_to_capital` (e.g., $\text{france} \to \text{paris}$, $\text{japan} \to \text{tokyo}$)
+- Taxonomic hierarchy: `category_to_instance` (e.g., $\text{fruit} \to \text{apple}$, $\text{animal} \to \text{dog}$)
 
 ### 2.4 Decoder and Probability Distribution (Section 8)
 The decoder matrix $D \in \mathbb{R}^{d \times V}$ projects the transformed representation $\mathbf{z}$ back to vocabulary space:
@@ -190,25 +190,25 @@ $$
 ### 2.5 Multiword-to-Word Recurrent Transition (Sections 10 - 14)
 When predicting a next word given a sequence $w_1, w_2, \dots, w_t$, the single-word transition is replaced by a recurrent state transition:
 
-1. **Embedding**: For each token:
+**1. Embedding**: For each token:
 
-   $$
-   \mathbf{e}_t = \mathbf{x}_t^T E \in \mathbb{R}^{1 \times d}
-   $$
+$$
+\mathbf{e}_t = \mathbf{x}_t^T E \in \mathbb{R}^{1 \times d}
+$$
 
-2. **State Recurrence**: Let $\mathbf{h}_t \in \mathbb{R}^{1 \times h}$ be the recurrent memory state with initial condition $\mathbf{h}_0 = \mathbf{0}$. The recurrence is parameterized by transition matrix $T_R \in \mathbb{R}^{(h+d) \times h}$ and bias vector $\mathbf{b} \in \mathbb{R}^{1 \times h}$:
+**2. State Recurrence**: Let $\mathbf{h}_t \in \mathbb{R}^{1 \times h}$ be the recurrent memory state with initial condition $\mathbf{h}_0 = \mathbf{0}$. The recurrence is parameterized by transition matrix $T_R \in \mathbb{R}^{(h+d) \times h}$ and bias vector $\mathbf{b} \in \mathbb{R}^{1 \times h}$:
 
-   $$
-   \mathbf{h}_t = \tanh\left([\mathbf{h}_{t-1}, \mathbf{e}_t] T_R + \mathbf{b}\right)
-   $$
+$$
+\mathbf{h}_t = \tanh\left([\mathbf{h}_{t-1}, \mathbf{e}_t] T_R + \mathbf{b}\right)
+$$
 
-   where $[\mathbf{h}_{t-1}, \mathbf{e}_t] \in \mathbb{R}^{1 \times (h+d)}$ denotes horizontal vector concatenation.
+where $[\mathbf{h}_{t-1}, \mathbf{e}_t] \in \mathbb{R}^{1 \times (h+d)}$ denotes horizontal vector concatenation.
 
-3. **Sequence Decoding**: The final memory state $\mathbf{h}_t$ compresses the full preceding context. The next-word distribution is computed using the shared decoder $D$ (setting $h = d$):
+**3. Sequence Decoding**: The final memory state $\mathbf{h}_t$ compresses the full preceding context. The next-word distribution is computed using the shared decoder $D$ (setting $h = d$):
 
-   $$
-   \mathbf{p}_{t+1} = \text{softmax}(\mathbf{h}_t D)
-   $$
+$$
+\mathbf{p}_{t+1} = \text{softmax}(\mathbf{h}_t D)
+$$
 
 Example from Section 12: given prefix `"the cat drinks"`, the recurrent state predicts $\mathbf{p}_4(\text{water}) = 0.558$ and $\mathbf{p}_4(\text{milk}) = 0.428$.
 
@@ -220,9 +220,9 @@ The word-level semantic transformation and sequence prediction tasks share an id
 | :--- | :--- | :--- |
 | **Input** | Single word $\mathbf{x}$ | Sequence $\mathbf{x}_1, \dots, \mathbf{x}_t$ |
 | **Encoder** | $\mathbf{e} = \mathbf{x}^T E$ | $\mathbf{e}_t = \mathbf{x}_t^T E$ |
-| **Transition** | $\mathbf{z} = \mathbf{e} T_r$ | $\mathbf{h}_t = \tanh([\mathbf{h}_{t-1}, \mathbf{e}_t] T_R + \mathbf{b})$ |
+| **Transition** | $\mathbf{z} = \mathbf{e} T_r$ | $`\mathbf{h}_t = \tanh([\mathbf{h}_{t-1}, \mathbf{e}_t] T_R + \mathbf{b})`$ |
 | **Decoder** | $\mathbf{s} = \mathbf{z} D$ | $\mathbf{s} = \mathbf{h}_t D$ |
-| **Output** | Semantically transformed word $\hat{w}$ | Next sequence word $\hat{w}_{t+1}$ |
+| **Output** | Semantically transformed word $\hat{w}$ | Next sequence word $`\hat{w}_{t+1}`$ |
 | **Target** | Synonym, antonym, or relation target | Next observed word |
 
 ---
@@ -238,90 +238,90 @@ $$
 \mathbf{e} = E[i, :], \quad \mathbf{z} = \mathbf{e} T_r, \quad \mathbf{s} = \mathbf{z} D, \quad \mathbf{p} = \text{softmax}(\mathbf{s}), \quad \mathcal{L} = -\log p_c
 $$
 
-1. **Score Gradient**:
+**1. Score Gradient**:
 
-   $$
-   \boldsymbol{\delta}_s = \frac{\partial \mathcal{L}}{\partial \mathbf{s}} = \mathbf{p} - \mathbf{y} \in \mathbb{R}^{1 \times V}
-   $$
+$$
+\boldsymbol{\delta}_s = \frac{\partial \mathcal{L}}{\partial \mathbf{s}} = \mathbf{p} - \mathbf{y} \in \mathbb{R}^{1 \times V}
+$$
 
-   where $\mathbf{y}$ is the one-hot target vector ($y_c = 1$, all other entries $0$).
+where $\mathbf{y}$ is the one-hot target vector ($y_c = 1$, all other entries $0$).
 
-2. **Decoder Gradient**:
+**2. Decoder Gradient**:
 
-   $$
-   \frac{\partial \mathcal{L}}{\partial D} = \mathbf{z}^T \boldsymbol{\delta}_s \in \mathbb{R}^{d \times V}
-   $$
+$$
+\frac{\partial \mathcal{L}}{\partial D} = \mathbf{z}^T \boldsymbol{\delta}_s \in \mathbb{R}^{d \times V}
+$$
 
-3. **Transformed Representation Gradient**:
+**3. Transformed Representation Gradient**:
 
-   $$
-   \boldsymbol{\delta}_z = \frac{\partial \mathcal{L}}{\partial \mathbf{z}} = \boldsymbol{\delta}_s D^T \in \mathbb{R}^{1 \times d}
-   $$
+$$
+\boldsymbol{\delta}_z = \frac{\partial \mathcal{L}}{\partial \mathbf{z}} = \boldsymbol{\delta}_s D^T \in \mathbb{R}^{1 \times d}
+$$
 
-4. **Semantic Transition Operator Gradient**:
+**4. Semantic Transition Operator Gradient**:
 
-   $$
-   \frac{\partial \mathcal{L}}{\partial T_r} = \mathbf{e}^T \boldsymbol{\delta}_z \in \mathbb{R}^{d \times d}
-   $$
+$$
+\frac{\partial \mathcal{L}}{\partial T_r} = \mathbf{e}^T \boldsymbol{\delta}_z \in \mathbb{R}^{d \times d}
+$$
 
-5. **Embedding Gradient**:
+**5. Embedding Gradient**:
 
-   $$
-   \boldsymbol{\delta}_e = \frac{\partial \mathcal{L}}{\partial \mathbf{e}} = \boldsymbol{\delta}_z T_r^T \in \mathbb{R}^{1 \times d}
-   $$
+$$
+\boldsymbol{\delta}_e = \frac{\partial \mathcal{L}}{\partial \mathbf{e}} = \boldsymbol{\delta}_z T_r^T \in \mathbb{R}^{1 \times d}
+$$
 
-   $$
-   \frac{\partial \mathcal{L}}{\partial E[i, :]} = \boldsymbol{\delta}_e
-   $$
+$$
+\frac{\partial \mathcal{L}}{\partial E[i, :]} = \boldsymbol{\delta}_e
+$$
 
-6. **Semantic Regularization Gradients**:
-   - For synonyms with target $j$: $\mathcal{L}_{syn} = \frac{1}{2}\|\mathbf{e}_i - \mathbf{e}_j\|^2 + \frac{\alpha}{2}\|T_{syn} - I\|_F^2$
+**6. Semantic Regularization Gradients**:
+- For synonyms with target $j$: $`\mathcal{L}_{syn} = \frac{1}{2}\lVert\mathbf{e}_i - \mathbf{e}_j\rVert^2 + \frac{\alpha}{2}\lVert T_{syn} - I\rVert_F^2`$
 
-     $$
-     \frac{\partial \mathcal{L}_{syn}}{\partial \mathbf{e}_i} = (\mathbf{e}_i - \mathbf{e}_j), \quad \frac{\partial \mathcal{L}_{syn}}{\partial \mathbf{e}_j} = -(\mathbf{e}_i - \mathbf{e}_j), \quad \frac{\partial \mathcal{L}_{syn}}{\partial T_{syn}} = \alpha (T_{syn} - I)
-     $$
+$$
+\frac{\partial \mathcal{L}_{syn}}{\partial \mathbf{e}_i} = (\mathbf{e}_i - \mathbf{e}_j), \quad \frac{\partial \mathcal{L}_{syn}}{\partial \mathbf{e}_j} = -(\mathbf{e}_i - \mathbf{e}_j), \quad \frac{\partial \mathcal{L}_{syn}}{\partial T_{syn}} = \alpha (T_{syn} - I)
+$$
 
-   - For antonyms with target $j$: $\mathcal{L}_{ant} = \frac{1}{2}\|\mathbf{e}_i + \mathbf{e}_j\|^2 + \frac{\alpha}{2}\|T_{ant} - (-I)\|_F^2$
+- For antonyms with target $j$: $`\mathcal{L}_{ant} = \frac{1}{2}\lVert\mathbf{e}_i + \mathbf{e}_j\rVert^2 + \frac{\alpha}{2}\lVert T_{ant} - (-I)\rVert_F^2`$
 
-     $$
-     \frac{\partial \mathcal{L}_{ant}}{\partial \mathbf{e}_i} = (\mathbf{e}_i + \mathbf{e}_j), \quad \frac{\partial \mathcal{L}_{ant}}{\partial \mathbf{e}_j} = (\mathbf{e}_i + \mathbf{e}_j), \quad \frac{\partial \mathcal{L}_{ant}}{\partial T_{ant}} = \alpha (T_{ant} + I)
-     $$
+$$
+\frac{\partial \mathcal{L}_{ant}}{\partial \mathbf{e}_i} = (\mathbf{e}_i + \mathbf{e}_j), \quad \frac{\partial \mathcal{L}_{ant}}{\partial \mathbf{e}_j} = (\mathbf{e}_i + \mathbf{e}_j), \quad \frac{\partial \mathcal{L}_{ant}}{\partial T_{ant}} = \alpha (T_{ant} + I)
+$$
 
 ### 3.2 Backpropagation Through Time (BPTT) for Sequences
 Given input sequence $w_1, \dots, w_t$ and target $w_{t+1}$ with target index $c$:
 
-1. Output score error at step $t$:
+**1. Output score error at step $t$**:
 
-   $$
-   \boldsymbol{\delta}_s = \mathbf{p}_{t+1} - \mathbf{y} \in \mathbb{R}^{1 \times V}
-   $$
+$$
+\boldsymbol{\delta}_s = \mathbf{p}_{t+1} - \mathbf{y} \in \mathbb{R}^{1 \times V}
+$$
 
-   $$
-   \frac{\partial \mathcal{L}}{\partial D} = \mathbf{h}_t^T \boldsymbol{\delta}_s \in \mathbb{R}^{d \times V}, \quad \boldsymbol{\delta}_{h_t} = \boldsymbol{\delta}_s D^T \in \mathbb{R}^{1 \times h}
-   $$
+$$
+\frac{\partial \mathcal{L}}{\partial D} = \mathbf{h}_t^T \boldsymbol{\delta}_s \in \mathbb{R}^{d \times V}, \quad \boldsymbol{\delta}_{h_t} = \boldsymbol{\delta}_s D^T \in \mathbb{R}^{1 \times h}
+$$
 
-2. Backpropagation loop for $k = t, t-1, \dots, 1$:
-   Let $\mathbf{u}_k = [\mathbf{h}_{k-1}, \mathbf{e}_k] \in \mathbb{R}^{1 \times (h+d)}$.
+**2. Backpropagation loop for $k = t, t-1, \dots, 1$**:\
+Let $`\mathbf{u}_k = [\mathbf{h}_{k-1}, \mathbf{e}_k] \in \mathbb{R}^{1 \times (h+d)}`$.
 
-   $$
-   \boldsymbol{\delta}_{a_k} = \boldsymbol{\delta}_{h_k} \odot (1 - \mathbf{h}_k^2) \in \mathbb{R}^{1 \times h}
-   $$
+$$
+\boldsymbol{\delta}_{a_k} = \boldsymbol{\delta}_{h_k} \odot (1 - \mathbf{h}_k^2) \in \mathbb{R}^{1 \times h}
+$$
 
-   $$
-   \frac{\partial \mathcal{L}}{\partial \mathbf{b}} \leftarrow \frac{\partial \mathcal{L}}{\partial \mathbf{b}} + \boldsymbol{\delta}_{a_k}, \quad \frac{\partial \mathcal{L}}{\partial T_R} \leftarrow \frac{\partial \mathcal{L}}{\partial T_R} + \mathbf{u}_k^T \boldsymbol{\delta}_{a_k}
-   $$
+$$
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}} \leftarrow \frac{\partial \mathcal{L}}{\partial \mathbf{b}} + \boldsymbol{\delta}_{a_k}, \quad \frac{\partial \mathcal{L}}{\partial T_R} \leftarrow \frac{\partial \mathcal{L}}{\partial T_R} + \mathbf{u}_k^T \boldsymbol{\delta}_{a_k}
+$$
 
-   $$
-   \boldsymbol{\delta}_{u_k} = \boldsymbol{\delta}_{a_k} T_R^T \in \mathbb{R}^{1 \times (h+d)}
-   $$
+$$
+\boldsymbol{\delta}_{u_k} = \boldsymbol{\delta}_{a_k} T_R^T \in \mathbb{R}^{1 \times (h+d)}
+$$
 
-   $$
-   \boldsymbol{\delta}_{h_{k-1}} = \boldsymbol{\delta}_{u_k}[:, :h], \quad \boldsymbol{\delta}_{e_k} = \boldsymbol{\delta}_{u_k}[:, h:]
-   $$
+$$
+\boldsymbol{\delta}_{h_{k-1}} = \boldsymbol{\delta}_{u_k}[:, :h], \quad \boldsymbol{\delta}_{e_k} = \boldsymbol{\delta}_{u_k}[:, h:]
+$$
 
-   $$
-   \frac{\partial \mathcal{L}}{\partial E[w_k, :]} \leftarrow \frac{\partial \mathcal{L}}{\partial E[w_k, :]} + \boldsymbol{\delta}_{e_k}
-   $$
+$$
+\frac{\partial \mathcal{L}}{\partial E[w_k, :]} \leftarrow \frac{\partial \mathcal{L}}{\partial E[w_k, :]} + \boldsymbol{\delta}_{e_k}
+$$
 
 ---
 
@@ -520,10 +520,10 @@ Both implementations reach 100% top-1 accuracy on valid relation candidates with
 ### 9.2 Matrix Operator Inspections
 - **Synonym Matrix ($T_{syn}$)**:
   - Average diagonal entry: $+1.0477$ (theoretical target: $+1.0$)
-  - Frobenius distance to identity: $\|T_{syn} - I\|_F = 1.1630$
+  - Frobenius distance to identity: $\lVert T_{syn} - I \rVert_F = 1.1630$
 - **Antonym Matrix ($T_{ant}$)**:
   - Average diagonal entry: $-1.2667$ (theoretical target: $-1.0$)
-  - Frobenius distance to negative identity: $\|T_{ant} - (-I)\|_F = 2.0582$
+  - Frobenius distance to negative identity: $\lVert T_{ant} - (-I) \rVert_F = 2.0582$
 
 ### 9.3 Multiword Sequence Prediction (PDF Section 12 Replication)
 Prefix input: `"the cat drinks"`
